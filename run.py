@@ -1,47 +1,26 @@
 # -*- coding: utf-8 -*-
-import json
 import os
 import telebot
 
 from util.log_helper import log
-from util.example_event import example
 from dialog.engine import DialogEngine
 
+dialog_engine = DialogEngine()
 
-def init():
-    global bot
-    global dialog_engine
+telegram_api_key = os.environ.get('TELEGRAM_TOKEN_PBOT')
+bot = telebot.TeleBot(telegram_api_key)
 
-    dialog_engine = DialogEngine()
-
-    telegram_api_key = os.environ.get('TOKEN')
-    bot = telebot.TeleBot(telegram_api_key)
-
-
-def lambda_handler(event, context, offline_mode=False):
+@bot.message_handler(content_types=["text"])
+def handleMessage(message):
     try:
-        log('Event: ' + str(event))
-        body = json.loads(event['body'])
-        message = telebot.types.Message.de_json(body['message'])
+        log('Handle message [chat_id=%d]: %s' % (message.chat.id, message.text))
         answer = dialog_engine.choose_answer(message)
-        if not offline_mode:
-            bot.reply_to(message, answer)
-        else:
-            log('Answer: ' + str(answer))
+        if answer:
+            bot.send_message(message.chat.id, answer)
 
     except Exception as e:
         log('Error: ' + str(e))
 
-    return {
-        'statusCode': 200,
-        'body': str(event),
-        'headers': {
-            'Content-Type': 'application/json'
-        }
-    }
-
-
-init()
 
 if __name__ == '__main__':
-    lambda_handler(event=example, context=None, offline_mode=True)
+    bot.polling(none_stop=True)

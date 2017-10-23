@@ -8,7 +8,7 @@ from util.log_helper import log
 
 class DialogEngine(object):
     def __init__(self):
-        log('Answers data:')
+        log('Available answers data:')
         for question, answers in data.items():
             log(question + ' -> ' + str(answers))
 
@@ -20,7 +20,7 @@ class DialogEngine(object):
         elif type(message) == Message:
             text = message.text
 
-        log('Message text: ' + str(text))
+        log('Answer message text: %s' % str(text))
         for question, answers in data.items():
             if re.match(question, text):
                 return random.choice(answers)

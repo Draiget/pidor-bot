@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# Check here: https://regex101.com/
 data = {
     r'(?i)^привет\W*$': [
         'ну привет',
