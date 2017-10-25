@@ -24,8 +24,8 @@ class DialogEngine(object):
             author = message.from_user.username
 
         log('Answer message text: %s' % str(text))
-        if author == '@Solidniy' or author == 'Solidniy':
-            return random.choice(senya_answers)
+        #if author == '@Solidniy' or author == 'Solidniy':
+        #    return random.choice(senya_answers)
         for question, answers in data.items():
             if re.match(question, text):
                 return random.choice(answers)
