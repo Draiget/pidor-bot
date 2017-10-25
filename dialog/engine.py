@@ -21,7 +21,7 @@ class DialogEngine(object):
             text = message
         elif type(message) == Message:
             text = message.text
-            author = message.from.username
+            author = message.from_user.username
 
         log('Answer message text: %s' % str(text))
         if author == '@Solidniy' or author == 'Solidniy':
