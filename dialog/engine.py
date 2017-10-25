@@ -15,12 +15,17 @@ class DialogEngine(object):
     @staticmethod
     def choose_answer(message):
         text = None
+        author = None
+        senya_answers = ['sosi', 'zavali ebalo senya', 'zaebal', 'sosirui arsenii']
         if type(message) == str:
             text = message
         elif type(message) == Message:
             text = message.text
+            author = message.from.username
 
         log('Answer message text: %s' % str(text))
+        if author == '@Solidniy' or author == 'Solidniy':
+            return random.choice(senya_answers)
         for question, answers in data.items():
             if re.match(question, text):
                 return random.choice(answers)
